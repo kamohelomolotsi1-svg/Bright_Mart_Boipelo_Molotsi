@@ -1,0 +1,50 @@
+Creating dim tables
+
+*CustomerSince in DimCustomer, not DimDate.
+* What belongs in DimDate?
+
+A Date dimension is used for business events that you want to analyze over time.
+
+Examples:
+
+Transaction Date
+Order Date
+Ship Date
+Delivery Date
+Invoice Date
+
+These are dates that occur on facts (transactions).
+
+For example:
+
+TransactionID	DateKey	CustomerKey	Amount
+T1001	20260701	101	250.00
+
+The DateKey points to DimDate, allowing you to answer questions like:
+
+Sales by Month
+Sales by Quarter
+Sales by Year
+What is CustomerSince?
+
+CustomerSince is an attribute describing the customer.
+
+It answers:
+
+"When did this customer become a customer?"
+
+That information belongs to the customer itself, just like:
+
+FirstName
+LastName
+LoyaltyTier
+Email
+
+For example:
+
+DimCustomer
+
+CustomerKey	Name	LoyaltyTier	CustomerSince
+101	John Smith	Gold	2021-03-15
+
+If John makes 100 purchases, you don't want to join to DimDate just to know when he first became a customer.
