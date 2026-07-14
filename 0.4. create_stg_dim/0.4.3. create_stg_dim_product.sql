@@ -7,12 +7,15 @@ FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data]
 
   ----------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS [stg_brightlearn_express].[dbo].[stg_dim_product]
+
 USE stg_brightlearn_express;
 GO
 
 
 IF OBJECT_ID(N'[stg_brightlearn_express].[dbo].[stg_dim_product]', N'U') IS NULL
 CREATE TABLE [stg_brightlearn_express].[dbo].[stg_dim_product] (
+       [product_id] INT IDENTITY(1, 1) PRIMARY KEY,
        [product_name] VARCHAR(255),
        [category] VARCHAR(255),
        [sub_category] VARCHAR(255),

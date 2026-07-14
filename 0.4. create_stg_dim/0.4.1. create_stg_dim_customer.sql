@@ -18,6 +18,7 @@ GO
 
 IF OBJECT_ID(N'[stg_brightlearn_express].[dbo].[stg_dim_customer]', N'U') IS NULL
 CREATE TABLE [stg_brightlearn_express].[dbo].[stg_dim_customer] (
+       [customer_id] INT IDENTITY(1,1) PRIMARY KEY,
        [customer_first_name] VARCHAR(255),
        [customer_last_name] VARCHAR(255),
        [customer_email] VARCHAR(255),

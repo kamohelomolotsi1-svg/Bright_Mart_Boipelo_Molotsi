@@ -10,16 +10,17 @@ IF OBJECT_ID('[stg_brightlearn_express].[dbo].[stg_dim_date]', 'U') IS NULL
 BEGIN
     CREATE TABLE [stg_brightlearn_express].[dbo].[stg_dim_date]
     (
-        date_key INT,
-        full_date DATE,
-        day_number TINYINT,
-        day_name VARCHAR(20),
-        month_number TINYINT,
-        month_name VARCHAR(20),
-        quarter_number TINYINT,
-        year_number SMALLINT,
-        week_number TINYINT,
-        day_of_week TINYINT
+        [date_id] INT IDENTITY(1, 1) PRIMARY KEY,
+        [date_key] INT,
+        [full_date] DATE,
+        [day_number] TINYINT,
+        [day_name] VARCHAR(20),
+        [month_number] TINYINT,
+        [month_name] VARCHAR(20),
+        [quarter_number] TINYINT,
+        [year_number] SMALLINT,
+        [week_number] TINYINT,
+        [day_of_week] TINYINT
     );
 END;
 GO
@@ -28,16 +29,16 @@ GO
 
 INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_date]
 (
-    date_key,
-    full_date,
-    day_number,
-    day_name,
-    month_number,
-    month_name,
-    quarter_number,
-    year_number,
-    week_number,
-    day_of_week
+    [date_key],
+    [full_date],
+    [day_number],
+    [day_name],
+    [month_number],
+    [month_name],
+    [quarter_number],
+    [year_number],
+    [week_number],
+    [day_of_week]
 )
 SELECT DISTINCT
     CONVERT(INT, FORMAT(TransactionDate, 'yyyyMMdd')) AS date_key,
