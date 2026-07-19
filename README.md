@@ -29,7 +29,32 @@ I built a retail analytics solution in SQL Server that includes:
 
 ## Architecture diagram
 
+The main ETL architecture and the warehouse model are now included directly in the README so they render in GitHub instead of appearing as plain file links.
+
 ![Bright Mart Express ETL architecture](6.0.%20ETL_Pipeline_Screenshots/bright_mart_express_diagram.PNG)
+
+### ETL flow
+
+```mermaid
+flowchart LR
+    A[Raw Source Data] --> B[Staging Layer]
+    B --> C[Clean Dimensions]
+    C --> D[Warehouse Dimensions]
+    D --> E[Fact Table: dwh_fact_sales]
+    E --> F[Business Reporting Queries]
+```
+
+### Star schema overview
+
+```mermaid
+erDiagram
+    dwh_fact_sales ||--o{ dwh_dim_customer : customer_key
+    dwh_fact_sales ||--o{ dwh_dim_product : product_key
+    dwh_fact_sales ||--o{ dwh_dim_date : date_id
+    dwh_fact_sales ||--o{ dwh_dim_store : store_key
+    dwh_fact_sales ||--o{ dwh_dim_payment : payment_key
+    dwh_fact_sales ||--o{ dwh_dim_employment : employment_key
+```
 
 ## Step-by-step ETL pipeline I implemented
 
