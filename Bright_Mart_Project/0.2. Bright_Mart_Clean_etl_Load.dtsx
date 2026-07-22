@@ -1,0 +1,339 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="7/22/2026 2:11:37 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-80TM65S"
+  DTS:CreatorName="DESKTOP-80TM65S\dell"
+  DTS:DTSID="{CD80DD10-3931-41AB-A6E9-921F0793BE63}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="16"
+  DTS:VersionGUID="{A8640464-50FF-4DEB-BE00-49B524211476}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Customer"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Customer"
+      DTS:DTSID="{F6DEE42B-DCD3-4F62-9891-27BE32E9B0BB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Customer"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Customer;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Date"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Date"
+      DTS:DTSID="{B4A6B825-33AC-4E02-8138-9DED8FD76178}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Date"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Date;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Employment"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Employment"
+      DTS:DTSID="{E9B9B62D-33D7-44CA-ABBF-9A910950FF1D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Employment"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Employment;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Payment"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Payment"
+      DTS:DTSID="{E230B858-D1CA-4E29-AF33-B066CC7CB82E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Payment"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Payment;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Product"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Product"
+      DTS:DTSID="{BFA3E20B-E444-4885-A544-EE0A0B76E621}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Product"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Product;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load_Clean_etl_dim_Store"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Load_Clean_etl_dim_Store"
+      DTS:DTSID="{0ED6314F-AC94-4930-AAA2-B0B7F3ECEA6F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load_Clean_etl_dim_Store"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+          SQLTask:SqlStatementSource="EXEC dbo.usp_Load_Clean_Dim_Store;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{953B8E19-61EB-4CF6-823B-8C274F585491}"
+      DTS:From="Package\Load_Clean_etl_dim_Customer"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load_Clean_etl_dim_Date" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{40FEECFF-165E-43C0-9AF2-8AA1D5928B23}"
+      DTS:From="Package\Load_Clean_etl_dim_Date"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Load_Clean_etl_dim_Product" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{2BE2894A-A430-42D5-BA15-C81B909F84A7}"
+      DTS:From="Package\Load_Clean_etl_dim_Product"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Load_Clean_etl_dim_Store" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{96B136BA-89F2-4E3A-81CF-9B052550FCF6}"
+      DTS:From="Package\Load_Clean_etl_dim_Store"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Load_Clean_etl_dim_Payment" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{8725262A-B4A9-41A3-A75F-8E876C202A46}"
+      DTS:From="Package\Load_Clean_etl_dim_Payment"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Load_Clean_etl_dim_Employment" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="229.333333333334,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Customer"
+          TopLeft="71.2499968148769,12.3157893384593" />
+        <NodeLayout
+          Size="206.666666666667,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Date"
+          TopLeft="92.499995864928,84.157893812805" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="185.916663481544,54.9824560051259">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-9.41666761661563,29.1754378076791"
+              Start="0,0"
+              End="-9.41666761661563,21.6754378076791">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.5877189038396" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.5877189038396"
+                    Point2="0,14.5877189038396"
+                    Point3="-4,14.5877189038396" />
+                  <mssgle:LineSegment
+                    End="-5.41666761661563,14.5877189038396" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-5.41666761661563,14.5877189038396"
+                    Point2="-9.41666761661563,14.5877189038396"
+                    Point3="-9.41666761661563,18.5877189038396" />
+                  <mssgle:LineSegment
+                    End="-9.41666761661563,21.6754378076791" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="220,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Product"
+          TopLeft="104.999995306134,159.421050881167" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="192.416662252198,126.824560479472">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,32.5964904016956"
+              Start="0,0"
+              End="0,25.0964904016956">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.0964904016956" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="210,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Store"
+          TopLeft="114.9999948591,229.385962605944" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="217.499995082617,202.087717547834">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.2982450581104"
+              Start="0,0"
+              End="0,19.7982450581104">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.7982450581104" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="225.333333333334,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Payment"
+          TopLeft="141.249993685633,302.807015199961" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="222.624994272366,272.052629272611">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.7543859273498"
+              Start="0,0"
+              End="0,23.2543859273498">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.2543859273498" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="242.666666666667,42.6666666666667"
+          Id="Package\Load_Clean_etl_dim_Employment"
+          TopLeft="137.499993853271,373.403506458081" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="253.9166603523,345.473681866627">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-32.4166664990285,27.9298245914535"
+              Start="0,0"
+              End="-32.4166664990285,20.4298245914535">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,9.96491229572675" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,9.96491229572675"
+                    Point2="0,13.9649122957267"
+                    Point3="-4,13.9649122957267" />
+                  <mssgle:LineSegment
+                    End="-28.4166664990285,13.9649122957267" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-28.4166664990285,13.9649122957267"
+                    Point2="-32.4166664990285,13.9649122957267"
+                    Point3="-32.4166664990285,17.9649122957267" />
+                  <mssgle:LineSegment
+                    End="-32.4166664990285,20.4298245914535" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

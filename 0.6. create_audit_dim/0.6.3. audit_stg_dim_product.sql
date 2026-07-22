@@ -1,5 +1,12 @@
--- audit_stg_dim_product.sql
+USE stg_brightlearn_express;
+GO
 
+
+CREATE OR ALTER PROCEDURE dbo.usp_Load_Stg_Dim_Product
+AS
+BEGIN
+
+SET NOCOUNT ON;
 
 DECLARE @BatchID UNIQUEIDENTIFIER = NEWID();
 DECLARE @StartTime DATETIME = GETDATE();
@@ -7,56 +14,66 @@ DECLARE @RowsInserted INT;
 
 BEGIN TRY
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_product]
-    (
-        product_name,
-        category,
-        sub_category,
-        sku,
-        supplier
-    )
-    SELECT DISTINCT
-           product_name,
-           category,
-           sub_category,
-           sku,
-           supplier
-    FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
+INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_product]
+(
+    product_name,
+    category,
+    sub_category,
+    sku,
+    supplier
+)
 
-    SET @RowsInserted = @@ROWCOUNT;
+SELECT DISTINCT
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_product',
-        @StartTime,
-        GETDATE(),
-        @RowsInserted,
-        'SUCCESS',
-        NULL
-    );
+    product_name,
+    category,
+    sub_category,
+    sku,
+    supplier
+
+FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
+
+SET @RowsInserted = @@ROWCOUNT;
+
+INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+(batch_id,procedure_name,start_time,end_time,rows_inserted,status,error_message)
+
+VALUES
+(
+@BatchID,
+'usp_Load_Stg_Dim_Product',
+@StartTime,
+GETDATE(),
+@RowsInserted,
+'SUCCESS',
+NULL
+);
 
 END TRY
 
 BEGIN CATCH
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_product',
-        @StartTime,
-        GETDATE(),
-        0,
-        'FAILED',
-        ERROR_MESSAGE()
-    );
+INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+(batch_id,procedure_name,start_time,end_time,rows_inserted,status,error_message)
 
-    THROW;
+VALUES
+(
+@BatchID,
+'usp_Load_Stg_Dim_Product',
+@StartTime,
+GETDATE(),
+0,
+'FAILED',
+ERROR_MESSAGE()
+);
 
-END CATCH;
+THROW;
 
--------------------------------------------------------------------------------
+END CATCH
 
-SELECT * FROM [stg_brightlearn_express].[dbo].[etl_audit_log]
+END;
+GO
+
+--------------------------------------------------------------------
+
+EXEC dbo.usp_Load_Stg_Dim_Product

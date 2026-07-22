@@ -1,54 +1,70 @@
---audit_stg_dim_employment
+USE stg_brightlearn_express;
+GO
 
-DECLARE @BatchID UNIQUEIDENTIFIER = NEWID();
-DECLARE @StartTime DATETIME = GETDATE();
+CREATE OR ALTER PROCEDURE dbo.usp_Load_Stg_Dim_Employment
+AS
+BEGIN
+
+SET NOCOUNT ON;
+
+DECLARE @BatchID UNIQUEIDENTIFIER=NEWID();
+DECLARE @StartTime DATETIME=GETDATE();
 DECLARE @RowsInserted INT;
 
 BEGIN TRY
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_employment]
-    (
-        cashier_name
-    )
-    SELECT DISTINCT
-           cashier_name
-    FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
+INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_employment]
+(
+cashier_name
+)
 
-    SET @RowsInserted = @@ROWCOUNT;
+SELECT DISTINCT
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_employment',
-        @StartTime,
-        GETDATE(),
-        @RowsInserted,
-        'SUCCESS',
-        NULL
-    );
+cashier_name
+
+FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
+
+SET @RowsInserted=@@ROWCOUNT;
+
+INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+(batch_id,procedure_name,start_time,end_time,rows_inserted,status,error_message)
+
+VALUES
+(
+@BatchID,
+'usp_Load_Stg_Dim_Employment',
+@StartTime,
+GETDATE(),
+@RowsInserted,
+'SUCCESS',
+NULL
+);
 
 END TRY
 
 BEGIN CATCH
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_employment',
-        @StartTime,
-        GETDATE(),
-        0,
-        'FAILED',
-        ERROR_MESSAGE()
-    );
+INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+(batch_id,procedure_name,start_time,end_time,rows_inserted,status,error_message)
 
-    THROW;
+VALUES
+(
+@BatchID,
+'usp_Load_Stg_Dim_Employment',
+@StartTime,
+GETDATE(),
+0,
+'FAILED',
+ERROR_MESSAGE()
+);
 
-END CATCH;
+THROW;
 
---------------------------------------------------------------------
+END CATCH
 
-SELECT * FROM [stg_brightlearn_express].[dbo].[etl_audit_log]
-SELECT * FROM [stg_brightlearn_express].[dbo].[stg_dim_employment]
+END;
+GO
+
+---------------------------------------------------------
+
+EXEC dbo.usp_Load_Stg_Dim_Employment;

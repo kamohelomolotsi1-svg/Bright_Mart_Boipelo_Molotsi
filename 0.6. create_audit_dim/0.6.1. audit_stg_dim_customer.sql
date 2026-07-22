@@ -1,86 +1,96 @@
--- audit_stg_dim_customer
+USE stg_brightlearn_express;
+GO
 
-DECLARE @BatchID UNIQUEIDENTIFIER = NEWID();
-DECLARE @StartTime DATETIME = GETDATE();
-DECLARE @RowsInserted INT;
+CREATE PROCEDURE dbo.usp_Load_Stg_Dim_Customer
+AS
+BEGIN
 
-BEGIN TRY
+    SET NOCOUNT ON;
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_customer]
-    (
-        customer_first_name,
-        customer_last_name,
-        customer_email,
-        customer_phone,
-        customer_city,
-        customer_province,
-        customer_loyalty_tier,
-        customer_since
-    )
+    DECLARE @BatchID UNIQUEIDENTIFIER = NEWID();
+    DECLARE @StartTime DATETIME = GETDATE();
+    DECLARE @RowsInserted INT;
 
-    SELECT DISTINCT
-           customer_first_name,
-           customer_last_name,
-           customer_email,
-           customer_phone,
-           customer_city,
-           customer_province,
-           customer_loyalty_tier,
-           customer_since
-    FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
+    BEGIN TRY
 
-    SET @RowsInserted = @@ROWCOUNT;
+        INSERT INTO [stg_brightlearn_express].[dbo].[stg_dim_customer]
+        (
+            customer_first_name,
+            customer_last_name,
+            customer_email,
+            customer_phone,
+            customer_city,
+            customer_province,
+            customer_loyalty_tier,
+            customer_since
+        )
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    (
-        batch_id,
-        procedure_name,
-        start_time,
-        end_time,
-        rows_inserted,
-        status,
-        error_message
-    )
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_customer',
-        @StartTime,
-        GETDATE(),
-        @RowsInserted,
-        'SUCCESS',
-        NULL
-    );
+        SELECT DISTINCT
+            customer_first_name,
+            customer_last_name,
+            customer_email,
+            customer_phone,
+            customer_city,
+            customer_province,
+            customer_loyalty_tier,
+            customer_since
+        FROM [stg_brightlearn_express].[dbo].[BrightLearn_Raw_Data];
 
-END TRY
+        SET @RowsInserted = @@ROWCOUNT;
 
-BEGIN CATCH
+        INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+        (
+            batch_id,
+            procedure_name,
+            start_time,
+            end_time,
+            rows_inserted,
+            status,
+            error_message
+        )
+        VALUES
+        (
+            @BatchID,
+            'usp_Load_Stg_Dim_Customer',
+            @StartTime,
+            GETDATE(),
+            @RowsInserted,
+            'SUCCESS',
+            NULL
+        );
 
-    INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
-    (
-        batch_id,
-        procedure_name,
-        start_time,
-        end_time,
-        rows_inserted,
-        status,
-        error_message
-    )
-    VALUES
-    (
-        @BatchID,
-        'Load stg_dim_customer',
-        @StartTime,
-        GETDATE(),
-        0,
-        'FAILED',
-        ERROR_MESSAGE()
-    );
+    END TRY
 
-    THROW;
+    BEGIN CATCH
 
-END CATCH;
+        INSERT INTO [stg_brightlearn_express].[dbo].[etl_audit_log]
+        (
+            batch_id,
+            procedure_name,
+            start_time,
+            end_time,
+            rows_inserted,
+            status,
+            error_message
+        )
+        VALUES
+        (
+            @BatchID,
+            'usp_Load_Stg_Dim_Customer',
+            @StartTime,
+            GETDATE(),
+            0,
+            'FAILED',
+            ERROR_MESSAGE()
+        );
 
--------------------------------------------------------------------
+        THROW;
 
-SELECT * FROM [stg_brightlearn_express].[dbo].[etl_audit_log]
+    END CATCH;
+
+END;
+GO
+
+----------------------------------------------------------
+
+EXEC dbo.usp_Load_Stg_Dim_Customer

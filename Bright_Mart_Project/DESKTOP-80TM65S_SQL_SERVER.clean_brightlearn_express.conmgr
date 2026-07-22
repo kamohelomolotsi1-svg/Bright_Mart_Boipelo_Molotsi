@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="DESKTOP-80TM65S_SQL_SERVER.clean_brightlearn_express"
+  DTS:DTSID="{D67A6A1C-DEE6-4849-87BD-45190B5425E6}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=DESKTOP-80TM65S\SQL_SERVER;Initial Catalog=clean_brightlearn_express;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Bright_Mart_Project-{D67A6A1C-DEE6-4849-87BD-45190B5425E6}DESKTOP-80TM65S\SQL_SERVER.clean_brightlearn_express;Auto Translate=False;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

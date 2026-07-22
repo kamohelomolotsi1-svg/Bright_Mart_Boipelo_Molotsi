@@ -1,0 +1,443 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="7/20/2026 2:50:33 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-80TM65S"
+  DTS:CreatorName="DESKTOP-80TM65S\dell"
+  DTS:DTSID="{7D2D8BB7-55C6-46CC-9B42-017EF651CCB9}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{1F212919-94E3-489E-BB44-EAC5E2A9BA50}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Raw_Data]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{D63A8161-B0BF-4F23-BD0D-1C21D78F403B}"
+      DTS:ObjectName="Raw_Data">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\Users\dell\OneDrive\Desktop\Bright_Mart_Express\Bright_Mart_Boipelo_Molotsi\BrightLearn_Raw_Data (Recovered).csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="transaction_date"
+              DTS:DTSID="{089A2349-FEAF-4DA0-AF88-069B4662F178}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="payment_method"
+              DTS:DTSID="{AA357519-37D3-4592-B713-2DCBFDFA2C37}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="cashier_name"
+              DTS:DTSID="{D1FB2A27-A7B5-43CF-A4F3-819C926EAB6F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="transaction_amount"
+              DTS:DTSID="{CAE92087-7D83-475E-A117-3A02BF0908D1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="transaction_discount"
+              DTS:DTSID="{244A22C6-5B7C-4574-964B-66B5BAB8AB9E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_first_name"
+              DTS:DTSID="{D3E7262F-6C73-404D-B67E-DFD420778DE3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_last_name"
+              DTS:DTSID="{FDB7737B-0CBB-45F2-BA38-2B4B0B8CE24E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_email"
+              DTS:DTSID="{F0FD2CD3-1B6E-408C-825C-2CDA1403BCA9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_phone"
+              DTS:DTSID="{45A0D140-FC13-4F9C-A00E-65DC1E94F0C4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_city"
+              DTS:DTSID="{5BC9C246-E1F1-4648-8CD4-CD087A8CF480}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_province"
+              DTS:DTSID="{9E4D877C-D801-41A2-BF1D-B82B2FDB02A2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_loyalty_tier"
+              DTS:DTSID="{DCD758C7-5A95-43BE-9830-64271588C0E2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="customer_since"
+              DTS:DTSID="{A4BF4AFB-5D71-43E1-BB9A-4BA5588999C8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="store_name"
+              DTS:DTSID="{1A962CB7-6ACD-4FC8-A99F-620BE329E5E0}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="store_city"
+              DTS:DTSID="{7FEB1F40-F60C-44A3-B773-FD06074BF6D2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="store_province"
+              DTS:DTSID="{19F77B1D-1614-4805-A1AB-8E8D65E25775}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="store_region"
+              DTS:DTSID="{9F2DF49A-383C-4D8F-9C62-323771918851}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="store_manager"
+              DTS:DTSID="{43166A34-1742-405A-B6E4-11EC867A41EE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="product_name"
+              DTS:DTSID="{1E4C6AC5-9CB0-47BE-ACF0-DF9FA0545E8C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="category"
+              DTS:DTSID="{29CBAB8A-93B5-417F-8426-EA419E7482D0}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="sub_category"
+              DTS:DTSID="{A79EF5C0-10CB-4431-8909-6C28761ABC86}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="sku"
+              DTS:DTSID="{346B2F10-6C93-44D3-BCE0-A5ED31A8EB81}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="unit_price"
+              DTS:DTSID="{2428D1E0-EA03-4768-86EC-A99838C07B87}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="cost_price"
+              DTS:DTSID="{C5A26D7A-4115-4A08-A082-47C7D997E517}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="supplier"
+              DTS:DTSID="{DECF0A29-F565-448E-94EB-D08336F1C71B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="qty"
+              DTS:DTSID="{57F6E981-06FD-46AA-A975-DF931DA83BCD}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="line_amount"
+              DTS:DTSID="{F51E125F-1524-43BC-9763-DA67035A0013}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="stock_on_hand"
+              DTS:DTSID="{4714DC77-02C8-4670-9B12-CCCEBC762FAF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="reorder_threshold"
+              DTS:DTSID="{EA73298E-C801-497E-B3D9-01731030B0D6}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\BrightMartRawData"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{59D33BA5-B0EB-448D-B78F-770EAAB62323}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="BrightMartRawData"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Create_stg_db"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Create_stg_db"
+      DTS:DTSID="{A9784F0D-F0DA-4A9B-B6F8-CBFB010F01F2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create_stg_db"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D1F777B2-0518-4EBC-851D-08FE7C2D75BF}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT name FROM sys.databases WHERE name = 'stg_brightlearn_express')&#xA;BEGIN&#xA;        CREATE DATABASE stg_brightlearn_express;&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Create_stg_table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C41EF13C-8248-433E-9F22-D4063D716B70}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create_stg_table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D1F777B2-0518-4EBC-851D-08FE7C2D75BF}"
+          SQLTask:SqlStatementSource="USE [stg_brightlearn_express]&#xA;GO&#xA;&#xA;&#xA;IF (OBJECT_ID('[stg_brightlearn_express].[dbo].[stg_BrightLearn_Data]') IS NOT NULL )&#xA;BEGIN&#xA;  PRINT 'Table with the same name available'&#xA;END&#xA;ELSE&#xA;BEGIN&#xA;CREATE TABLE [stg_brightlearn_express].[dbo].[stg_BrightLearn_Data](&#xA;&#x9;[transaction_date] [nvarchar](50) NOT NULL,&#xA;&#x9;[payment_method] [nvarchar](50) NOT NULL,&#xA;&#x9;[cashier_name] [nvarchar](50) NOT NULL,&#xA;&#x9;[transaction_amount] [float] NOT NULL,&#xA;&#x9;[transaction_discount] [float] NOT NULL,&#xA;&#x9;[customer_first_name] [nvarchar](50) NULL,&#xA;&#x9;[customer_last_name] [nvarchar](50) NULL,&#xA;&#x9;[customer_email] [nvarchar](50) NULL,&#xA;&#x9;[customer_phone] [int] NULL,&#xA;&#x9;[customer_city] [nvarchar](50) NULL,&#xA;&#x9;[customer_province] [nvarchar](50) NULL,&#xA;&#x9;[customer_loyalty_tier] [nvarchar](50) NULL,&#xA;&#x9;[customer_since] [datetime2](7) NULL,&#xA;&#x9;[store_name] [nvarchar](50) NOT NULL,&#xA;&#x9;[store_city] [nvarchar](50) NOT NULL,&#xA;&#x9;[store_province] [nvarchar](50) NOT NULL,&#xA;&#x9;[store_region] [nvarchar](50) NOT NULL,&#xA;&#x9;[store_manager] [nvarchar](50) NOT NULL,&#xA;&#x9;[product_name] [nvarchar](50) NOT NULL,&#xA;&#x9;[category] [nvarchar](50) NULL,&#xA;&#x9;[sub_category] [nvarchar](50) NOT NULL,&#xA;&#x9;[sku] [nvarchar](50) NOT NULL,&#xA;&#x9;[unit_price] [float] NOT NULL,&#xA;&#x9;[cost_price] [float] NOT NULL,&#xA;&#x9;[supplier] [nvarchar](50) NOT NULL,&#xA;&#x9;[qty] [nvarchar](50) NOT NULL,&#xA;&#x9;[line_amount] [float] NOT NULL,&#xA;&#x9;[stock_on_hand] [int] NOT NULL,&#xA;&#x9;[reorder_threshold] [int] NOT NULL&#xA;);&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C0F897D7-AB6D-4F69-A68E-070A26DC5302}"
+      DTS:From="Package\BrightMartRawData"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Create_stg_db" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{8959AAF0-9D5C-4441-9C56-E1EEADB31319}"
+      DTS:From="Package\Create_stg_db"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Create_stg_table" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="173.333333333334,42.6666666666667"
+          Id="Package\BrightMartRawData"
+          TopLeft="65.624997066334,24.6315786769185" />
+        <NodeLayout
+          Size="149.333333333334,42.6666666666667"
+          Id="Package\Create_stg_db"
+          TopLeft="77.4999965354801,95.1052621136577" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="152.229163467574,67.2982453435852">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.8070167700725"
+              Start="0,0"
+              End="0,20.3070167700725">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.3070167700725" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="161.333333333334,42.6666666666667"
+          Id="Package\Create_stg_table"
+          TopLeft="75.6249966192991,175.842103332446" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="154.229163244056,137.771928780324">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,38.0701745521219"
+              Start="0,0"
+              End="0,30.5701745521219">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.5701745521219" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
