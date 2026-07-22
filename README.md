@@ -88,8 +88,8 @@ My goal for this project was to:
 - Track ETL execution with audit logging.
 - Produce business intelligence queries from the final warehouse.
 
-## Stage 1 - Bronze to Silver Staging Layer
-I started by loading the raw CSV into BrightLearn_Raw_Data as the Bronze landing layer.
+## Stage 1 - Bronze Layer: Raw Landing
+I started by loading the raw CSV into BrightLearn_Raw_Data as the Bronze landing layer. This is where the original source feed first enters the medallion architecture before any SQL-based quality cleanup begins.
 
 From there, I created the Silver staging dimensions for:
 - Customer
@@ -101,8 +101,10 @@ From there, I created the Silver staging dimensions for:
 
 I then loaded distinct records into the staging schema so the data was prepared for the next transformation step.
 
-## Stage 2 - Silver to Gold Clean Layer
-I transformed each staging dimension into a cleaned version that was ready for the Gold layer.
+![Bronze to Gold architecture overview](6.0.%20ETL_Pipeline_Screenshots/bright_mart_express_diagram.PNG)
+
+## Stage 2 - Silver Layer: Staging and Standardization
+This is the Silver layer where I prepared the data for business use. The staging tables were built to hold the raw source rows in a structured format, and then I standardized them into a cleaner representation that the Gold layer could consume confidently.
 
 Typical transformations included:
 - UPPER() for names
@@ -115,6 +117,15 @@ Typical transformations included:
 Special handling:
 - Customer duplicates were resolved using first name, last name, and the most complete email field.
 - Product duplicates were resolved by SKU while prioritizing the most complete category and supplier values.
+
+![Silver audit evidence for staging](6.0.%20ETL_Pipeline_Screenshots/audit_logging_stg_dim_customer.PNG)
+
+## Stage 3 - Silver to Gold Clean Layer
+I transformed each staging dimension into a cleaned version that was ready for the Gold layer. This step is where the medallion design starts to become visible as data moves from raw and somewhat messy to trustworthy and business-ready.
+
+The clean dimensions were then used as the foundation for the final warehouse load, so the reporting model would not be based on unreliable data.
+
+![Clean-layer audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_clean_dim_customer.PNG)
 
 ## Audit Logging
 I also built audit logging into each ETL stored procedure so the pipeline could be monitored, traced, and validated throughout the load process.
@@ -131,6 +142,8 @@ The audit table captures:
 - Layer Name
 
 TRY...CATCH and transaction control help keep the loads reliable.
+
+![Fact-table audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_fact_sales.PNG)
 
 ## Data Warehouse (Gold Layer)
 Once the clean layer was ready, I loaded the Gold warehouse model from those cleaned dimensions.
@@ -159,6 +172,8 @@ The fact table stores the business measures and surrogate keys needed for report
 
 Foreign keys enforce referential integrity across the model.
 
+![Gold warehouse audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_dim_customer.PNG)
+
 ## Reporting
 The reporting layer answers business questions such as:
 1. Top 5 products by revenue
@@ -174,6 +189,12 @@ Key findings from the analysis included:
 - Every customer purchased after 28 April 2024.
 - No June inventory was below reorder threshold.
 - January growth is NULL because there is no previous month.
+
+![Data analysis view 1](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_1.PNG)
+
+![Data analysis view 2](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_2.PNG)
+
+![Data analysis view 3](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_3.PNG)
 
 ## Layer Summary
 
@@ -204,6 +225,12 @@ In this package, I created Execute SQL Task components for the staging procedure
 
 This stage lands the raw source data into the Silver staging database and prepares it for transformation.
 
+![SSIS staging package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_stg_etl_pipeline.PNG)
+
+![SSIS staging execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_stg_etl_pipeline_execute_results.PNG)
+
+![SSIS staging success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_stg_etl_ran_successfully.PNG)
+
 #### 2. Clean package
 Package: 0.2. Bright_Mart_Clean_etl_Load.dtsx
 
@@ -218,6 +245,12 @@ The sequence was:
 6. usp_Load_Clean_Dim_Employment
 
 This stage is where I standardized the fields, cleaned inconsistent values, and removed duplicate records.
+
+![SSIS clean package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_clean_etl_pipeline.PNG)
+
+![SSIS clean execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_clean_etl_pipeline_execute_results.PNG)
+
+![SSIS clean success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_Clean_etl_ran_successfully.PNG)
 
 #### 3. Warehouse package
 Package: 0.3. Bright_Mart_dwh_etl_Load.dtsx
@@ -234,6 +267,12 @@ The execution order was:
 7. usp_Load_DWH_Fact_Sales
 
 This final stage gave me the Gold reporting model with the fact table and dimension keys ready for analysis.
+
+![SSIS warehouse package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_dwh_etl_pipeline.PNG)
+
+![SSIS warehouse execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_dwh_etl_pipeline_execute_results.PNG)
+
+![SSIS warehouse success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_dwh_etl_ran_successfully.PNG)
 
 ### Why I used SSIS
 I used SSIS because it let me turn the ETL process into something visual, structured, and repeatable. It helped me:
