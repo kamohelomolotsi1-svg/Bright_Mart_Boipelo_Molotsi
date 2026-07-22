@@ -303,24 +303,6 @@ These visual assets show the architecture, the SSIS package flow, and the succes
 
 These screenshots and diagrams are the visual proof that my SSIS workflow was built and executed successfully.
 
-## Screenshots
-
-![Architecture overview](6.0.%20ETL_Pipeline_Screenshots/bright_mart_express_diagram.PNG)
-
-![Staging audit log](6.0.%20ETL_Pipeline_Screenshots/audit_logging_stg_dim_customer.PNG)
-
-![Clean dimension audit](6.0.%20ETL_Pipeline_Screenshots/audit_logging_clean_dim_customer.PNG)
-
-![Warehouse audit example](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_dim_customer.PNG)
-
-![Warehouse fact sales audit](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_fact_sales.PNG)
-
-![Data analysis screenshot 1](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_1.PNG)
-
-![Data analysis screenshot 2](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_2.PNG)
-
-![Data analysis screenshot 3](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_3.PNG)
-
 ## Skills Demonstrated
 - SQL Server
 - ETL Design
