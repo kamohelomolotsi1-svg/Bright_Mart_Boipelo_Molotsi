@@ -1,4 +1,4 @@
-﻿# BrightLearn Express Data Warehouse Project
+﻿# BrightMart Data Warehouse Project
 
 ## Project Overview
 I built this project to show how I can take raw retail data, transform it through a medallion architecture, and deliver a reporting-ready SQL Server data warehouse.
