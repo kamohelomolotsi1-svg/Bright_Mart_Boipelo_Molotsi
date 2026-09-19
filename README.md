@@ -14,9 +14,18 @@ The workflow follows a practical medallion pattern: raw source data is landed in
 - Audit logging and execution tracking
 - Power BI reporting for business analysis
 
+The main goals of this project were to:
+- Build a dimensional warehouse for BrightMart retail analytics.
+- Design a repeatable ETL process in SQL Server.
+- Standardize and cleanse raw transactional data before it reached the reporting model.
+- Remove duplicate and inconsistent values from the source feed.
+- Preserve customer history using SCD Type 2 logic.
+- Track ETL execution with audit logging and validation.
+- Deliver a reporting-ready model for Power BI dashboards and business analysis.
+
 ---
 
-## Architecture & Visual Documentation
+## Architecture / End-to-End Data Pipeline
 
 ### 1. End-to-End Data Pipeline Diagram
 
@@ -30,9 +39,10 @@ flowchart LR
     F --> G[Stored procedures<br/>usp_Load_Clean_Dim_*]
     G --> H[SQL Server<br/>dwh_brightlearn_express]
     H --> I[Warehouse dimensions + fact<br/>dwh_dim_customer<br/>dwh_dim_date<br/>dwh_dim_product<br/>dwh_dim_store<br/>dwh_dim_payment<br/>dwh_dim_employment<br/>dwh_fact_sales]
-    I --> J[ETL audit logging<br/>etl_audit_log]
-    J --> K[Power BI Semantic Model]
+    I --> K[Power BI Semantic Model]
     K --> L[Power BI Dashboard]
+
+    H --> J[ETL audit logging<br/>etl_audit_log]
 
     subgraph SSIS[SSIS Orchestration]
         M[0.1 Bright_Mart_stg_etl_Load.dtsx]
@@ -46,6 +56,19 @@ flowchart LR
 ```
 
 This flow reflects the repository structure: the raw BrightLearn export is first landed in the SQL Server staging database, then cleaned into the clean layer, then loaded into the warehouse dimension and fact tables for BI consumption.
+
+## Technologies Used
+- SQL Server
+- SSIS integration packages
+- Stored procedures for ETL automation
+- Data warehouse design and dimensional modeling
+- Power BI for reporting and dashboarding
+- ETL audit logging and validation
+- Data cleansing and standardization
+- SCD Type 2 historical tracking
+- Business intelligence and reporting
+
+## Data Warehouse Design / Star Schema
 
 ### 2. Data Warehouse / Star Schema Diagram
 
@@ -136,6 +159,19 @@ erDiagram
 
 The star schema is centred on `dwh_fact_sales` and connects to the repository’s six dimensions: `dwh_dim_customer`, `dwh_dim_product`, `dwh_dim_date`, `dwh_dim_store`, `dwh_dim_payment`, and `dwh_dim_employment`.
 
+## Data Warehouse (Gold Layer)
+Once the clean layer was ready, I loaded the Gold warehouse model from those cleaned dimensions.
+
+The Gold layer contains `dwh_fact_sales` and six dimensions: `dwh_dim_customer`, `dwh_dim_product`, `dwh_dim_date`, `dwh_dim_store`, `dwh_dim_payment`, and `dwh_dim_employment`.
+
+The customer dimension uses SCD Type 2 so historical changes can be tracked over time using effective dates, expiry dates, and the `is_current` flag. The remaining dimensions use incremental `NOT EXISTS` loading. The fact table stores the business measures and surrogate keys required for reporting, including quantity, unit price, cost price, discount, stock on hand, reorder threshold, and the associated dimension keys.
+
+Surrogate and foreign keys are used across the model, and referential integrity is enforced to keep the reporting layer reliable.
+
+![Gold warehouse audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_dim_customer.PNG)
+
+## ETL Pipeline
+
 ### 3. ETL Processing Diagram
 
 ```mermaid
@@ -146,166 +182,119 @@ flowchart TB
     D --> E[clean_brightlearn_express<br/>clean layer]
     E --> F[SSIS Orchestration<br/>0.2 Bright_Mart_Clean_etl_Load.dtsx]
     F --> G[usp_Load_Clean_Dim_Customer<br/>usp_Load_Clean_Dim_Date<br/>usp_Load_Clean_Dim_Product<br/>usp_Load_Clean_Dim_Store<br/>usp_Load_Clean_Dim_Payment<br/>usp_Load_Clean_Dim_Employment]
-    G --> H[dwh_brightlearn_express<br/>dimension warehouse]
+    G --> H[dwh_brightlearn_express<br/>warehouse load]
     H --> I[SSIS Orchestration<br/>0.3 Bright_Mart_dwh_etl_Load.dtsx]
     I --> J[usp_Load_DWH_Dim_Customer<br/>usp_Load_DWH_Dim_Date<br/>usp_Load_DWH_Dim_Product<br/>usp_Load_DWH_Dim_Store<br/>usp_Load_DWH_Dim_Payment<br/>usp_Load_DWH_Dim_Employment<br/>usp_Load_DWH_Fact_Sales]
-    J --> K[ETL validation + audit<br/>etl_audit_log]
-    K --> L[Power BI reporting layer]
+    J --> K[Warehouse dimensions + fact<br/>dwh_dim_* + dwh_fact_sales]
+    K --> L[Power BI Semantic Model]
+    L --> M[Power BI Dashboard]
+
+    J --> N[ETL validation + audit<br/>etl_audit_log]
 ```
 
-This ETL flow matches the repository’s actual SQL and SSIS design: the staging package loads raw data into `stg_brightlearn_express`, the clean package standardizes it, and the warehouse package loads the final dimensions and fact table with audit tracking in `etl_audit_log`.
+The repository uses SSIS to orchestrate the end-to-end pipeline: raw data is landed in `stg_brightlearn_express`, transformed through the clean layer, and then loaded into the Gold warehouse for reporting with audit validation in `etl_audit_log`.
 
-### 4. Power BI Reporting Layer
+### SSIS Integration Project
+The ETL process is automated through three SSIS packages in the Bright_Mart_Project folder:
 
-I used Power BI Desktop to connect to the SQL Server warehouse, build the semantic model, and create the final reporting pages from the `dwh_brightlearn_express` tables. The process followed the repository flow: load the warehouse tables, establish relationships between the fact and dimensions, create key business measures, and then design the dashboard pages for executive, customer, and operations reporting.
+1. `0.1 Bright_Mart_stg_etl_Load.dtsx` - Loads raw source data into the staging layer and prepares the staged dimensions for transformation.
+2. `0.2 Bright_Mart_Clean_etl_Load.dtsx` - Standardizes, cleans, and de-duplicates the staging data before loading the clean dimensions.
+3. `0.3 Bright_Mart_dwh_etl_Load.dtsx` - Loads the Gold warehouse dimensions and fact table for reporting and validation.
 
-#### Power BI Build Flow
+Each package was designed to orchestrate the SQL Server ETL flow in a repeatable sequence. Successful execution evidence for these packages is available in the repository’s ETL screenshot folder.
 
-1. Connect Power BI to the SQL Server warehouse (`dwh_brightlearn_express`).
-2. Import the fact table and dimension tables: `dwh_fact_sales`, `dwh_dim_customer`, `dwh_dim_product`, `dwh_dim_date`, `dwh_dim_store`, `dwh_dim_payment`, and `dwh_dim_employment`.
-3. Create relationships using the warehouse keys and surrogate keys defined in the fact table.
-4. Build measures for revenue, quantity, transaction value, stock position, and customer/loyalty insights.
-5. Design separate reporting pages for leadership, customer/product analysis, and inventory operations.
+![SSIS staging package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_stg_etl_pipeline.PNG)
 
-#### Step 1: Executive Overview Page
+![SSIS clean package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_clean_etl_pipeline.PNG)
 
-![Executive Overview dashboard](6.0.%20ETL_Pipeline_Screenshots/Executive%20Overview%20Pbi.PNG)
+![SSIS warehouse package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_dwh_etl_pipeline.PNG)
 
-This was the first leadership-facing page in the Power BI model. I used it to summarize revenue performance, sales activity, and high-level operational health so senior stakeholders could see the business status quickly. The important visuals are the KPI-style summary and trend-based views that communicate overall performance at a glance.
+## Data Quality & Validation
 
-#### Step 2: Customer and Product Analysis Page
+### SQL Server to Power BI Reconciliation
 
-![Customer and product analysis](6.0.%20ETL_Pipeline_Screenshots/Customer%20and%20Product%20Analysis.PNG)
+Power BI measures were validated against aggregate queries in the SQL Server source data warehouse to ensure reporting accuracy.
 
-This page focuses on customer behaviour and product performance. I used the warehouse dimensions to segment customer activity and compare revenue contribution by product/category, which supports merchandising and loyalty decisions. The key visuals here are the customer/product comparison views and the product performance indicators derived from the sales fact table.
+| Metric | SQL Server Result |
+| --- | ---: |
+| Fact Rows | 4,747 |
+| Distinct Sales Keys | 4,747 |
+| Total Quantity | 8,531 |
+| Total Sales | R2,102,693.66 |
 
-#### Step 3: Inventory and Operations Page
+- Fact rows and distinct sales keys both equal 4,747, confirming one fact record per sales key.
+- Power BI totals were reconciled against SQL Server aggregates.
+- Power BI may display rounded values such as 9K quantity and 5K transactions in KPI cards, while the exact validated values are 8,531 and 4,747.
+- Total Sales reconciles to R2,102,693.66, displayed as approximately R2.10M in Power BI.
 
-![Inventory and operations dashboard](6.0.%20ETL_Pipeline_Screenshots/Inventory%20and%20Operations.PNG)
+## Transformation and Quality Controls
+The Bronze, Silver, and Gold layers are connected through a practical ETL flow. The raw file is landed in the Bronze stage, data is normalized and staged in Silver, and the Gold model is built from the cleaned and validated dimensions.
 
-This page highlights stock health and operational monitoring. I built this view to make inventory risk and store operations easier to assess, using the fact table fields such as stock levels, reorder thresholds, and transaction activity. The important visuals are the inventory and operational KPI cards that help identify low-stock or high-risk product positions.
+Key transformation controls included:
+- `UPPER()` to standardize text values
+- `LOWER()` to standardize email addresses
+- `LTRIM()` and `RTRIM()` for whitespace cleanup
+- `ISNULL()` handling for missing values
+- `ROW_NUMBER()` deduplication logic
+- `NOT EXISTS` incremental loading
+- Customer duplicate resolution using personal details and the most complete email value
+- Product/SKU duplicate resolution while preserving the most complete category and supplier details
 
-This Power BI layer is the final reporting interface for the BrightMart warehouse and brings together the SQL Server ETL pipeline, the dimensional model, and the business analysis needed for decision-making.
-
-## Project Objectives
-The main goals of this project were to:
-- Build a dimensional warehouse for BrightMart retail analytics.
-- Design a repeatable ETL process in SQL Server.
-- Standardize and cleanse raw transactional data before it reached the reporting model.
-- Remove duplicate and inconsistent values from the source feed.
-- Preserve customer history using SCD Type 2 logic.
-- Track ETL execution with audit logging and validation.
-- Deliver a reporting-ready model for Power BI dashboards and business analysis.
-
-## Stage 1 - Bronze Layer: Raw Landing
-I started by loading the raw CSV into BrightLearn_Raw_Data as the Bronze landing layer. This is where the original source feed first enters the medallion architecture before any SQL-based quality cleanup begins.
-
-From there, I created the Silver staging dimensions for:
-- Customer
-- Date
-- Product
-- Store
-- Payment
-- Employment
-
-I then loaded distinct records into the staging schema so the data was prepared for the next transformation step.
-
-![Bronze to Gold architecture overview](6.0.%20ETL_Pipeline_Screenshots/bright_mart_express_diagram.PNG)
-
-## Stage 2 - Silver Layer: Staging and Standardization
-This is the Silver layer where I prepared the data for business use. The staging tables were built to hold the raw source rows in a structured format, and then I standardized them into a cleaner representation that the Gold layer could consume confidently.
-
-Typical transformations included:
-- UPPER() for names
-- LOWER() for email addresses
-- LTRIM/RTRIM
-- ISNULL defaults
-- Duplicate removal with ROW_NUMBER()
-- NOT EXISTS incremental loading
-
-Special handling:
-- Customer duplicates were resolved using first name, last name, and the most complete email field.
-- Product duplicates were resolved by SKU while prioritizing the most complete category and supplier values.
-
-![Silver audit evidence for staging](6.0.%20ETL_Pipeline_Screenshots/audit_logging_stg_dim_customer.PNG)
-
-## Stage 3 - Silver to Gold Clean Layer
-I transformed each staging dimension into a cleaned version that was ready for the Gold layer. This step is where the medallion design starts to become visible as data moves from raw and somewhat messy to trustworthy and business-ready.
-
-The clean dimensions were then used as the foundation for the final warehouse load, so the reporting model would not be based on unreliable data.
-
-![Clean-layer audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_clean_dim_customer.PNG)
-
-## Audit Logging
-I also built audit logging into each ETL stored procedure so the pipeline could be monitored, traced, and validated throughout the load process.
-
-The audit table captures:
-- Batch ID
-- Procedure Name
-- Start Time
-- End Time
-- Rows Inserted
-- Status
-- Error Message
-- Table Name
-- Layer Name
-
-TRY...CATCH and transaction control help keep the loads reliable.
+Audit logging was built into the ETL procedures to track each load with important execution details such as batch ID, procedure name, start/end timestamps, row counts, status, table name, layer name, and error message. This made the pipeline traceable and easier to validate during each run.
 
 ![Fact-table audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_fact_sales.PNG)
 
-## Data Warehouse (Gold Layer)
-Once the clean layer was ready, I loaded the Gold warehouse model from those cleaned dimensions.
+## Power BI Dashboard
 
-The customer dimension uses SCD Type 2 so historical changes can be tracked over time:
-- Effective Date
-- Expiry Date
-- Is_Current flag
+### 4. Power BI Reporting Layer
 
-The other dimensions use incremental NOT EXISTS loading.
+Power BI was connected to the SQL Server warehouse and used to build the reporting model from the `dwh_brightlearn_express` tables. The final dashboard layers were designed to summarize leadership performance, customer and product behaviour, and operational inventory health.
 
-The fact table stores the business measures and surrogate keys needed for reporting:
-- Date Key
-- Customer Key
-- Product Key
-- Store Key
-- Payment Key
-- Employment Key
-- Quantity
-- Revenue
-- Unit Price
-- Cost Price
-- Discount
-- Stock on Hand
-- Reorder Threshold
+#### Executive Overview
 
-Foreign keys enforce referential integrity across the model.
+![Executive Overview dashboard](6.0.%20ETL_Pipeline_Screenshots/Executive%20Overview%20Pbi.PNG)
 
-![Gold warehouse audit evidence](6.0.%20ETL_Pipeline_Screenshots/audit_logging_dwh_dim_customer.PNG)
+This page provides a high-level summary of sales performance and operational health for executive stakeholders.
 
-## Reporting
-The reporting layer answers business questions such as:
-1. Top 5 products by revenue
-2. Monthly revenue per store
-3. Month-over-month revenue growth using LAG()
-4. Top 10 loyalty customers
-5. Customers inactive since 28-Apr-2024
-6. Average transaction value by loyalty tier
-7. Quantity sold by category and store
-8. Inventory below reorder threshold
+#### Customer and Product Analysis
 
-Key findings from the analysis included:
-- Every customer purchased after 28 April 2024.
-- No June inventory was below reorder threshold.
-- January growth is NULL because there is no previous month.
+![Customer and product analysis](6.0.%20ETL_Pipeline_Screenshots/Customer%20and%20Product%20Analysis.PNG)
 
-![Data analysis view 1](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_1.PNG)
+This page focuses on customer behaviour and product performance using the warehouse dimensions and fact table.
 
-![Data analysis view 2](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_2.PNG)
+#### Inventory and Operations
 
-![Data analysis view 3](6.0.%20ETL_Pipeline_Screenshots/data_analysis_group_related_data_3.PNG)
+![Inventory and operations dashboard](6.0.%20ETL_Pipeline_Screenshots/Inventory%20and%20Operations.PNG)
 
-## Layer Summary
+This page highlights stock health, reorder thresholds, and operational indicators for inventory monitoring.
+
+## Key Business Insights
+Validated dashboard findings from the final reporting model include:
+
+- Total Sales: R2,102,693.66 (approximately R2.10M)
+- Total Quantity: 8,531
+- Total Transactions: 4,747
+- Total Customers: 50
+- Total Products: 44
+- Products Below Reorder Threshold: 0
+- Low Stock Products: 4
+- Lowest Stock Buffer: 3
+
+Customer loyalty sales:
+- Gold: R998.52K (47.49%)
+- Silver: R680.98K (32.39%)
+- Bronze: R423.20K (20.13%)
+
+Customer counts by loyalty tier:
+- Bronze: 21
+- Silver: 17
+- Gold: 12
+
+This project reflects the end-to-end ETL and reporting journey implemented in the repository: raw retail data is landed, staged, cleaned, modeled into a warehouse, and then surfaced through Power BI for business reporting and validation. The result is a structured, auditable, and scalable analytics solution that emphasizes data quality, traceability, repeatability, and actionable insight.
+
+## Repository Structure
+
+### Layer Summary
 
 | Medallion Layer | Purpose | Main Objects |
 |---|---|---|
@@ -314,103 +303,7 @@ Key findings from the analysis included:
 | Gold | Cleaned, curated, reporting-ready dimensions and facts | clean_dim_*, dwh_dim_*, dwh_fact_sales |
 | Audit | ETL tracking and monitoring | etl_audit_log |
 
-## SSIS Integration Project
-I also built an SSIS integration project in the repository under the Bright_Mart_Project folder so I could automate the entire ETL workflow end-to-end.
-
-What I did in SSIS was turn the SQL stored-procedure pipeline into a visual orchestration process. Instead of executing each procedure manually, I connected the stages into ordered packages that run one after the other.
-
-### SSIS workflow I implemented
-
-#### 1. Staging package
-Package: 0.1. Bright_Mart_stg_etl_Load.dtsx
-
-In this package, I created Execute SQL Task components for the staging procedures and linked them in sequence:
-1. usp_Load_Stg_Dim_Customer
-2. usp_Load_Stg_Dim_Date
-3. usp_Load_Stg_Dim_Product
-4. usp_Load_Stg_Dim_Store
-5. usp_Load_Stg_Dim_Payment
-6. usp_Load_Stg_Dim_Employment
-
-This stage lands the raw source data into the Silver staging database and prepares it for transformation.
-
-![SSIS staging package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_stg_etl_pipeline.PNG)
-
-![SSIS staging execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_stg_etl_pipeline_execute_results.PNG)
-
-![SSIS staging success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_stg_etl_ran_successfully.PNG)
-
-#### 2. Clean package
-Package: 0.2. Bright_Mart_Clean_etl_Load.dtsx
-
-In the clean package, I chained the clean-layer procedures so the staging data could be transformed into business-ready dimensions.
-
-The sequence was:
-1. usp_Load_Clean_Dim_Customer
-2. usp_Load_Clean_Dim_Date
-3. usp_Load_Clean_Dim_Product
-4. usp_Load_Clean_Dim_Store
-5. usp_Load_Clean_Dim_Payment
-6. usp_Load_Clean_Dim_Employment
-
-This stage is where I standardized the fields, cleaned inconsistent values, and removed duplicate records.
-
-![SSIS clean package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_clean_etl_pipeline.PNG)
-
-![SSIS clean execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_clean_etl_pipeline_execute_results.PNG)
-
-![SSIS clean success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_Clean_etl_ran_successfully.PNG)
-
-#### 3. Warehouse package
-Package: 0.3. Bright_Mart_dwh_etl_Load.dtsx
-
-In the Gold package, I ran the warehouse load procedures in order so the dimensions and fact table could be built for reporting.
-
-The execution order was:
-1. usp_Load_DWH_Dim_Customer
-2. usp_Load_DWH_Dim_Date
-3. usp_Load_DWH_Dim_Product
-4. usp_Load_DWH_Dim_Store
-5. usp_Load_DWH_Dim_Payment
-6. usp_Load_DWH_Dim_Employment
-7. usp_Load_DWH_Fact_Sales
-
-This final stage gave me the Gold reporting model with the fact table and dimension keys ready for analysis.
-
-![SSIS warehouse package flow](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_dwh_etl_pipeline.PNG)
-
-![SSIS warehouse execution results](6.0.%20ETL_Pipeline_Screenshots/SSIS_Load_dwh_etl_pipeline_execute_results.PNG)
-
-![SSIS warehouse success confirmation](6.0.%20ETL_Pipeline_Screenshots/SSIS_dwh_etl_ran_successfully.PNG)
-
-### Why I used SSIS
-I used SSIS because it let me turn the ETL process into something visual, structured, and repeatable. It helped me:
-- automate the whole SQL loading chain
-- control execution order with precedence constraints
-- reuse SQL Server connections across the three environments
-- monitor the package flow more clearly
-- make the ETL process easier to explain and present
-
-### SSIS screenshots and illustrations I captured
-I saved a set of screenshots and diagrams in the ETL screenshots folder so the SSIS story is documented visually as well as in SQL.
-
-These visual assets show the architecture, the SSIS package flow, and the successful execution results:
-- SSIS_Load_stg_etl_pipeline.PNG - staging package design
-- SSIS_Load_clean_etl_pipeline.PNG - clean package design
-- SSIS_Load_dwh_etl_pipeline.PNG - warehouse package design
-- SSIS_Load_stg_etl_pipeline_execute_results.PNG - staging execution output
-- SSIS_Load_clean_etl_pipeline_execute_results.PNG - clean execution output
-- SSIS_Load_dwh_etl_pipeline_execute_results.PNG - warehouse execution output
-- SSIS_stg_etl_ran_successfully.PNG - staging success confirmation
-- SSIS_Clean_etl_ran_successfully.PNG - clean success confirmation
-- SSIS_dwh_etl_ran_successfully.PNG - warehouse success confirmation
-- bright_mart_express_diagram.PNG - architectural overview diagram
-- audit_logging_stg_dim_customer.PNG - staging audit evidence
-- audit_logging_clean_dim_customer.PNG - clean audit evidence
-- audit_logging_dwh_dim_customer.PNG - warehouse audit evidence
-- audit_logging_dwh_fact_sales.PNG - fact table audit evidence
-
-These screenshots and diagrams are the visual proof that my SSIS workflow was built and executed successfully.
+The repository is organized into the SQL build, staging, cleaning, warehouse, audit, SSIS, and reporting assets used to deliver the end-to-end BrightMart solution.
 
 ## Skills Demonstrated
 - SQL Server
@@ -424,6 +317,15 @@ These screenshots and diagrams are the visual proof that my SSIS workflow was bu
 - Audit Logging
 - Foreign Keys
 - Business Analytics
+- SSIS orchestration
+- Power BI reporting
 
-## Conclusion
-This project reflects the complete end-to-end ETL and reporting journey implemented in the repository: raw retail data was landed, staged, cleaned, modeled into a warehouse, and then surfaced through Power BI for business reporting. The result is a structured, auditable, and scalable analytics solution that emphasizes data quality, traceability, repeatability, and actionable insight.
+## How to Explore the Project
+1. Start with the raw source file and the SQL scripts under the numbered folders to follow the ETL flow from staging to warehouse creation.
+2. Review the staging, clean, and warehouse dimension scripts to understand how the data is progressively transformed and validated.
+3. Open the SSIS project in the Bright_Mart_Project folder to see the orchestration of the SQL-based ETL process.
+4. Review the Power BI screenshots and the final reporting layer to understand how the warehouse feeds business analysis.
+5. Use the audit screenshots and validation steps to trace how quality checks and ETL tracking were built into the solution.
+
+## Author
+Boipelo Molotsi
